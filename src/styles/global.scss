@@ -1,0 +1,58 @@
+/** o arquivo .module.css diz que pe do tipo css scoped scss ele só fica disponivel para o arquivo que importar ele*/
+/** global não leva .module no nome para que ele seja palicado a toda aplicação e não somente a quem o importar*/
+/** instalar sass - yarn add sass*/
+
+/** não pode fazer stilização é um tag html (h1) direta, tem que ser atraves de uma classe*/
+
+  * { // para todos os elementos
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  :root { // variaveis 
+    --white: #fff;
+  
+    --gray-100: #e1e1e6;
+    --gray-300: #a8a8b3;
+    --gray-800: #29292e;
+    --gray-900: #121214;
+  
+    --cyan-500: #61dafb;
+    --yellow-500: #eba417;
+  }
+  
+  // fote size se adaptar as telas
+  @media (max-width: 1080px) {
+    html {
+      font-size: 93.75%; // 15px
+    }
+  }
+  
+  @media (max-width: 720) {
+    html {
+      font-size: 87.5%; // 14px
+    }
+  }
+  
+  body {
+    background: var(--gray-900);
+    color: var(--white);
+  }
+  
+  body,
+  input,
+  textarea,
+  select,
+  button {
+    font: 400 1rem "Roboto", sans-serif;
+  }
+  
+  button {
+    cursor: pointer;
+  }
+  
+  a {
+    color: inherit; // herdar a cor do elemento pai
+    text-decoration: none;
+  }
