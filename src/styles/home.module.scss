@@ -1,0 +1,11 @@
+/** o arquivo .module.css diz que pe do tipo css scoped scss*/
+/** instalar sass - yarn add sass*/
+
+.title { /** não pode fazer stilização é um tag html (h1) direta, tem que ser atraves de uma classe*/
+    color: red;
+    font-family: Roboto;
+  
+    span {
+      color: blue;
+    }
+  }
