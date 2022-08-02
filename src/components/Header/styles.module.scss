@@ -1,0 +1,55 @@
+.headerContainer {
+    height: 5rem;
+    border-bottom: 1px solid var(--gray-800);
+  }
+  
+  .headerContent {
+    max-width: 1120px; // para alinhar ao centro
+    height: 5rem;// ocupar todo o tamanho 
+    margin: 0 auto;// alinhar ao centro horizontal
+    padding: 0 2rem; // caso o usuario reduza a menos que 1120
+  
+    display: flex; // para alinhar verticalmente
+    align-items: center; // para alinhar verticalmente
+  
+    nav {
+      margin-left: 5rem;
+      height: 5rem;// ocupar altura toda
+  
+      a {
+        display: inline-block;
+        position: relative;
+        padding: 0 0.5rem;
+        height: 5rem;
+        line-height: 5rem; // ocupar a altura toda mais o texto fica centralizado
+        color: var(--gray-300);
+  
+        transition: color 0.2s;
+  
+        // toda âncora que possui âncora antes
+        & + a {
+          margin-left: 2rem; // espaçar os itens a partir do primeiro
+        }
+  
+        &:hover {
+          color: var(--white-300);
+        }
+  
+        &.active {
+          color: var(--white-300);
+          font-weight: bold;
+        }
+  
+        &.active::after { // aplicar algo apos o componente
+          content: "";// será inserido um texto apos o componente, mesmo que não uso temos que dclarar 
+          height: 3px;
+          border-radius: 3px 3px 0 0;
+          width: 100%;
+          position: absolute;
+          bottom: 1px;
+          left: 0;
+          background: var(--yellow-500);
+        }
+      }
+    }
+  }
