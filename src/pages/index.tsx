@@ -1,7 +1,6 @@
-import { GetServerSideProps } from "next";
+import { GetStaticProps } from "next";
 import Head from "next/head";// tudo que for feita aqui vai ser refletido no head do _document
 import Image from "next/image";
-import { Stripe } from "stripe"; // yarn add stripe
 import avatarImg from "../../public/images/avatar.svg";
 import { SubscribeButton } from "../components/SubscribeButton";
 import { stripe } from "../services/stripe";
@@ -40,11 +39,10 @@ export default function Home({ product }: HomeProps) {
 
 // executado na camada de node.js do next precisa sempre ser feito em um pagina e não em um componente
 // ppassa do pagina paa o componete e não do componente para a pagina
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getStaticProps: GetStaticProps  = async () => {
   // retrieve -> busca apenas um
-  const price = await stripe.prices.retrieve("price_1LSQ14KmogR6ERdPXCqIdGar");
-  
-console.log(price)
+  const price = await stripe.prices.retrieve("price_1LSQ14KmogR6ERdPXCqIdGar");  
+
   const product = {
     priceId: price.id,
     amount: new Intl.NumberFormat("en-US", {
@@ -57,5 +55,6 @@ console.log(price)
     props: {
       product,
     },
+    revalidate: 60 * 60 * 24, // 24 horas - tempo que ele vai gerar uma nova page
   };
 };
