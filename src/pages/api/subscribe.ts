@@ -7,6 +7,9 @@ import { stripe } from "../../services/stripe";
 // getStaticProps (SSG)
 // API routes
 
+//https://dashboard.stripe.com/settings/account - caso erro abaixo, só entrar e colocar qualquer nome e salval
+//error - Error: In order to use Checkout, you must set an account or business name at https://dashboard.stripe.com/account.
+
 export default async function subscribe(
   req: NextApiRequest,
   res: NextApiResponse
@@ -14,10 +17,11 @@ export default async function subscribe(
   // verifica se método da request é POST ("criando")
   if (req.method === "POST") {
     // backend consegue pegar sessão do usuário através de cookies (req), se tivesse salvo no localstorage não seria cessivel
-    const session = await getSession({ req });
+    const session  = await req.body.user;
 
+    console.log("ijdishdjfhfui",session)
     const stripeCustomer = await stripe.customers.create({
-      email: session.user.email,
+      email: session.email,
     });
 
     // informações para criação do checkout
@@ -25,7 +29,7 @@ export default async function subscribe(
       customer: stripeCustomer.id,
       payment_method_types: ["card"],
       billing_address_collection: "required",
-      line_items: [{ price: "price_1Kgc7nGHxfJecL8MmyS7kfbV", quantity: 1 }],
+      line_items: [{ price: "price_1LSQ14KmogR6ERdPXCqIdGar", quantity: 1 }],
       mode: "subscription",
       allow_promotion_codes: true,
 
