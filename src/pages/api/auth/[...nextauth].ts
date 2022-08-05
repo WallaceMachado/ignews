@@ -27,18 +27,40 @@ export default NextAuth({
    // funções executadas automaticamente quando acontece alguma ação
    callbacks: {
     // async signIn( { user, account, profile}: signInProps ) {
-    async signIn({ user, account, profile }): Promise<boolean> {
-
+    async signIn({ user, account, profile }) {
+     
       const { email } = user;
-
+     
       try {
-        await fauna.query(q.Create(q.Collection("users"), { data: { email } }));
+        await fauna.query(
 
-        // true = login deu certo
+          // se não existe usuário com...
+          q.If(
+            q.Not(
+              q.Exists(
+                q.Match(
+                  q.Index('user_by_email'),
+                  // esse email...
+                  q.Casefold(user.email)
+                )
+              )
+            ),
+            // crie um usuário com esse email
+            q.Create(
+              q.Collection("users"),
+              { data: { email } }
+            ),
+            // do contrário, busque seu referente
+            q.Get(
+              q.Match(
+                q.Index('user_by_email'),
+                q.Casefold(user.email)
+              )
+            )
+          )
+        )
         return true;
-
-      } catch {
-
+      } catch{
         // false = login deu errado
         return false;
       }
