@@ -3,6 +3,7 @@ import { Readable } from "stream";
 import Stripe from "stripe";// key  123456
 
 import { stripe } from "../../services/stripe";
+import { saveSubscription } from "./_lib/manageSubscription";
 
 // webhooks é um desing parttner usado na web
 //é quando estamos usando uma app terceiro, neste caso o stripe, acontece um erro 
@@ -55,7 +56,24 @@ export default async function webhooks(
     const { type } = event;
 
     if (relevantEvents.has(type)) {
-      console.log("Evento recebido", event);
+      try {
+        switch (type) {
+          case "checkout.session.completed":
+            const checkoutSession = event.data
+              .object as Stripe.Checkout.Session;
+
+            await saveSubscription(
+              checkoutSession.subscription.toString(),
+              checkoutSession.customer.toString()
+            );
+
+            break;
+          default:
+            throw new Error("Unhandled event.");
+        }
+      } catch (err) {
+        return res.json({ error: "Webhook handler failed." });
+      }
     }
 
     res.json({ received: true });
