@@ -29,7 +29,12 @@ export const config = {
 };
 
 // quais eventos enviados pelo stripe são relevantes para nossa app
-const relevantEvents = new Set(["checkout.session.completed"]);
+// eventos a serem ouvidos
+const relevantEvents = new Set([
+  "checkout.session.completed",
+  "customer.subscription.updated",
+  "customer.subscription.deleted",
+]);
 
 export default async function webhooks(
   req: NextApiRequest,
@@ -58,13 +63,28 @@ export default async function webhooks(
     if (relevantEvents.has(type)) {
       try {
         switch (type) {
+           // entidade subscriptions
+           case "customer.subscription.updated":
+            case "customer.subscription.deleted":
+              const subscription = event.data.object as Stripe.Subscription;
+  
+              await saveSubscription(
+                subscription.id,
+                subscription.customer.toString(),
+                false
+              );
+  
+              break;
+  
+            // entidade session
           case "checkout.session.completed":
             const checkoutSession = event.data
               .object as Stripe.Checkout.Session;
 
             await saveSubscription(
               checkoutSession.subscription.toString(),
-              checkoutSession.customer.toString()
+              checkoutSession.customer.toString(),
+              true
             );
 
             break;
