@@ -1,5 +1,9 @@
 import Head from "next/head";
 import styles from "./styles.module.scss";
+import Prismic from "@prismicio/client";
+
+import { getPrismicClient } from "../../services/primisc";
+import { GetStaticProps } from "next";
 
 export default function Posts() {
   return (
@@ -39,3 +43,22 @@ export default function Posts() {
     </>
   );
 }
+
+// página estática -> menos consumo de banda
+export const getStaticProps: GetStaticProps = async () => {
+  const prismic = getPrismicClient();
+
+  const response = await prismic.query(
+    [Prismic.predicates.at("document.type", "publication")],
+    {
+      fetch: ["publication.title", "publication.content"],
+      pageSize: 100,
+    }
+  );
+
+  console.log(JSON.stringify(response, null, 2));
+
+  return {
+    props: {},
+  };
+};
