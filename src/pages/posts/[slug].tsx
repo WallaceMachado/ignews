@@ -45,9 +45,21 @@ export const getServerSideProps: GetServerSideProps = async ({
 }) => {
   // buscar cookies para checar se usuário está logado
   const session = await getSession({ req });
+  console.log("mkhfdsfhsdfghfhuipghiuhdfsghkijsdjfghsdhg ",  session);
 
   // guardar slug
   const { slug } = params;
+
+   // direciona para home caso não esteja logado
+   if (!session?.activeSubscription) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      }
+    }
+  }
+
 
   // cliente do prismic
   const prismic = getPrismicClient(req);

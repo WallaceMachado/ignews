@@ -7,7 +7,7 @@ export function SignInButton() {
   const { data: session } = useSession();
   
   // retorna expires e user (email, image, name)
-  console.log(session);
+  console.log("mkhfdsfhaqui aqui aqui ",  session);
 
   return session ? (
     <button
