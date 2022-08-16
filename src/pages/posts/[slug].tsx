@@ -45,7 +45,7 @@ export const getServerSideProps: GetServerSideProps = async ({
 }) => {
   // buscar cookies para checar se usuário está logado
   const session = await getSession({ req });
-  console.log("mkhfdsfhsdfghfhuipghiuhdfsghkijsdjfghsdhg ",  session);
+
 
   // guardar slug
   const { slug } = params;
