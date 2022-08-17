@@ -1,6 +1,6 @@
 import { useSession, signIn } from 'next-auth/react';
 import { api } from "../../services/api";
-import { useRouter } from 'next/router';
+import { useRouter } from "next/router";
 import { getStripeJs } from "../../services/stripe-js";// yarn add @stripe/stripe-js
 import styles from "./styles.module.scss";
 
