@@ -1,4 +1,4 @@
-import { GetServerSideProps, GetStaticProps } from "next";
+import { GetStaticPaths, GetStaticProps } from "next";
 import { getSession, useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
@@ -57,11 +57,15 @@ export default function PostPreview({ post }: PostPreviewProps) {
   );
 }
 
-export const getStaticPaths = () => {
+//
+export const getStaticPaths: GetStaticPaths = async () => {
   return {
-    paths: [],
+    paths: [],// dessa forma os post só serão carregado na camada do next, após o primeiro acesso
     fallback: "blocking",
   };
+  // true = se ainda não gerado estático, carrega post pelo lado do cliente
+    // false = se ainda não gerado estático, retorna 404
+    // blocking = se ainda não gerado estático, carrega conteúdo na camada do next (ssr)
 };
 
 
@@ -95,6 +99,8 @@ export const  getStaticProps: GetStaticProps  = async ({ params }) => {
    props: {
      post,
    },
+   redirect: 60 * 30, // 30 minutes /// tempo que o conteudo deverá ser renovado
+   // sempre bom ter quando temos paginas estáticas
  };
 };
 

@@ -5,6 +5,8 @@ import Stripe from "stripe";// key  123456
 import { stripe } from "../../services/stripe";
 import { saveSubscription } from "./_lib/manageSubscription";
 
+//comando para iniciar webhooks - ./stripe listen --forward-to localhost:3000/api/webhooks
+
 // webhooks é um desing parttner usado na web
 //é quando estamos usando uma app terceiro, neste caso o stripe, acontece um erro 
 // e o stripe avisa do erro, por exemplo erro no pagamento
